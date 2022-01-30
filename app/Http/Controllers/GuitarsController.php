@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Guitar;
 
 class GuitarsController extends Controller
 {
@@ -23,7 +24,7 @@ class GuitarsController extends Controller
         //  GET
 
         return view('guitars.index', [
-            'guitars' => self::getData(),
+            'guitars' => Guitar::all(),
             'userInput' => '<script>alert("hello")</script>'
         ]);
     }
@@ -36,6 +37,8 @@ class GuitarsController extends Controller
     public function create()
     {
         // GET
+
+        return view('guitars.create');
     }
 
     /**
@@ -47,6 +50,15 @@ class GuitarsController extends Controller
     public function store(Request $request)
     {
         // POST
+        $guitar = new Guitar();
+
+        $guitar->name = $request->input('guitar-name');
+        $guitar->brand = $request->input('brand');
+        $guitar->year_made = $request->input('year');
+
+        $guitar->save();
+
+        return redirect()->route('guitars.index');
     }
 
     /**
